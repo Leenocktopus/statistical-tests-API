@@ -1,25 +1,62 @@
 package randombits.util;
 
-import randombits.main.TestResult;
+import md.MdTest;
+import randombits.exceptions.IllegalTestParametersException;
+
 
 import java.util.Map;
 
 public enum MdFactory {
     ONE {
         @Override
-        public TestResult test(Map<String, String> testParams) {
-            return new TestResult(1, true);
+        Double test(String sequence) {
+            return MdTest.one(sequence);
         }
     }, TWO {
         @Override
-        public TestResult test(Map<String, String> testParams) {
-            return new TestResult(1, true);
+        Double test(String sequence) {
+            return MdTest.two(sequence);
+        }
+    }, THREE {
+        @Override
+        Double test(String sequence) {
+            return MdTest.three(sequence);
+        }
+    }, FOUR {
+        @Override
+        Double test(String sequence) {
+            return MdTest.four(sequence);
+        }
+    }, FIVE {
+        @Override
+        Double test(String sequence) {
+            return MdTest.five(sequence);
+        }
+    }, SIX {
+        @Override
+        Double test(String sequence) {
+            return MdTest.six(sequence);
+        }
+    }, SEVEN {
+        @Override
+        Double test(String sequence) {
+            return MdTest.seven(sequence);
+        }
+    }, EIGHT{
+        @Override
+        Double test(String sequence) {
+            return MdTest.eight(sequence);
         }
     };
 
-    abstract TestResult test(Map<String, String> testParams);
+    abstract Double test(String sequence);
 
-    public TestResult getResult(Map<String, String> testParams) {
-        return this.test(testParams);
+    public MdResult getResult(Map<String, String> testParams) {
+        try{
+
+            return new MdResult(this.test(testParams.get("sequence")));
+        }catch (IllegalArgumentException ex){
+            throw new IllegalTestParametersException(ex.getMessage(), new Throwable(this.name()));
+        }
     }
 }

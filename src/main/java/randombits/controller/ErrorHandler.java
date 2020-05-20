@@ -3,7 +3,10 @@ package randombits.controller;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MissingPathVariableException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -98,5 +101,28 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
         errorEntity.setMessage("No handler found on server for this URL.");
         errorEntity.setPath(((ServletWebRequest) request).getRequest().getRequestURI());
         return new ResponseEntity<>(errorEntity, HttpStatus.NOT_FOUND);
+    }
+
+
+    @Override
+    protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        ErrorEntity errorEntity = new ErrorEntity();
+        errorEntity.setTimestamp(ZonedDateTime.now(ZoneId.of("UTC")));
+        errorEntity.setStatus(HttpStatus.BAD_REQUEST.value());
+        errorEntity.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        errorEntity.setMessage("Missing request parameters.");
+        errorEntity.setPath(((ServletWebRequest) request).getRequest().getRequestURI());
+        return new ResponseEntity<>(errorEntity, HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        ErrorEntity errorEntity = new ErrorEntity();
+        errorEntity.setTimestamp(ZonedDateTime.now(ZoneId.of("UTC")));
+        errorEntity.setStatus(HttpStatus.BAD_REQUEST.value());
+        errorEntity.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        errorEntity.setMessage("Request body is not readable.");
+        errorEntity.setPath(((ServletWebRequest) request).getRequest().getRequestURI());
+        return new ResponseEntity<>(errorEntity, HttpStatus.BAD_REQUEST);
     }
 }

@@ -24,10 +24,17 @@ public class NistController {
         this.nistService = nistService;
     }
 
-    @PostMapping("/{test}")
-    Object testSequence(@PathVariable("test") NistFactory method, @RequestBody Map<String, String> testParams) {
-        return nistService.computeNistStatistic(method, testParams);
+    @PostMapping
+    Map<String, Object> testSequenceAll(@RequestBody Map<String, Map<String, String>> params) {
+        return nistService.computeNistStatisticForAll(params);
     }
+
+    @PostMapping("/{test}")
+    Object testSequence(@PathVariable("test") NistFactory method, @RequestBody Map<String, String> params) {
+        return nistService.computeNistStatistic(method, params);
+    }
+
+
 
 
 }
