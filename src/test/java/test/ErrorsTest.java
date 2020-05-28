@@ -5,10 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import randombits.Application;
 
-import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -27,7 +25,7 @@ public class ErrorsTest {
         this.mockMvc.perform(get("/"))
                 .andExpect(status().is(404))
                 .andExpect(jsonPath("$.message")
-                .value("No handler found on server for this URL."));
+                        .value("No handler found on server for this URL."));
     }
 
     @Test
@@ -61,7 +59,7 @@ public class ErrorsTest {
     }
 
     @Test
-    public void shouldReturnBadRequestOnIllegalOrEmptyBody() throws Exception{
+    public void shouldReturnBadRequestOnIllegalOrEmptyBody() throws Exception {
         this.mockMvc.perform(post("/nist_test"))
                 .andExpect(status().is(400))
                 .andExpect(jsonPath("$.message")
@@ -69,7 +67,7 @@ public class ErrorsTest {
     }
 
     @Test
-    public void shouldReturnBadRequestOnMissingRequestParams() throws Exception{
+    public void shouldReturnBadRequestOnMissingRequestParams() throws Exception {
         this.mockMvc.perform(post("/md_test/"))
                 .andExpect(status().is(400))
                 .andExpect(jsonPath("$.message")

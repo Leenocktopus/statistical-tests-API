@@ -36,10 +36,9 @@ public class NistApiTest {
         )
                 .andExpect(status().is(422))
                 .andExpect(jsonPath("$.message")
-                .value("Illegal block size ( > sequence || < 2): 100"));
+                        .value("Illegal block size ( > sequence || < 2): 100"));
         Random r = new Random();
         r.nextInt(1000);
-        ;
 
         this.mockMvc.perform(post("/nist_test/excursion_variant")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -47,7 +46,7 @@ public class NistApiTest {
         )
                 .andExpect(status().is(422))
                 .andExpect(jsonPath("$.message")
-                        .value("Sequence should contain only ones (1) and zeroes (0)."));;
+                        .value("Sequence should contain only ones (1) and zeroes (0)."));
     }
 
     @Test

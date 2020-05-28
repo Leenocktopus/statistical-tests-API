@@ -33,17 +33,17 @@ public class MdApiTest {
         )
                 .andExpect(status().is(422))
                 .andExpect(jsonPath("$.message")
-                .value("Sequence should contain only ones (1) and zeroes (0)."));
+                        .value("Sequence should contain only ones (1) and zeroes (0)."));
     }
 
     @Test
     public void shouldReturnResultWhenGoodParameters() throws Exception {
-            this.mockMvc.perform(post("/md_test/one")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content("{\"sequence\": \"110010010000111111010101000100010000101100010100010111000\"}"))
-                    .andExpect(status().isOk())
-                    .andExpect(content()
-                            .json("{ \"pValue\": 0.012888100881170567, \"sequenceRandom\": true }"));
+        this.mockMvc.perform(post("/md_test/one")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"sequence\": \"110010010000111111010101000100010000101100010100010111000\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .json("{\"value\": 0.012888100881170567}"));
     }
 
 }
